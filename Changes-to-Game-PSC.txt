@@ -1,0 +1,23 @@
+Changes to Game.PSC for This Patch
+
+The complete source for Game.PSC is not published here because it belongs to Bethesda. For clarity, this is an example of the API change that integrates the patch into the game.
+
+
+BEFORE
+
+; Finds the closest reference of a given base object within a given radius of a reference
+ObjectReference Function FindClosestReferenceOfAnyTypeInListFromRef(FormList arBaseObjects, ObjectReference arCenter, float afRadius) global
+	return FindClosestReferenceOfAnyTypeInList(arBaseObjects, arCenter.X, arCenter.Y, arCenter.Z, afRadius)
+endFunction
+
+
+AFTER
+
+; Finds the closest reference of a given base object within a given radius of a reference
+ObjectReference Function FindClosestReferenceOfAnyTypeInListFromRef(FormList arBaseObjects, ObjectReference arCenter, float afRadius) global
+	ObjectReference objRef = FindClosestReferenceOfAnyTypeInList(arBaseObjects, arCenter.X, arCenter.Y, arCenter.Z, afRadius)
+	if objRef == none
+		objRef = _frp_Game.FindClosestOfAnyTypeInList(arBaseObjects, arCenter, afRadius)
+	endif
+	return objRef
+endFunction
